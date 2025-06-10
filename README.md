@@ -31,3 +31,6 @@ Provides a brief overview of the disease
 
 # ** Model Details **
 - Embeddings: sentence-transformers/all-MiniLM-L6-v2
+
+# Project Demo **
+- [ Click here to download and view the demo video](./demo.webm)
