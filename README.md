@@ -33,4 +33,4 @@ Provides a brief overview of the disease
 - Embeddings: sentence-transformers/all-MiniLM-L6-v2
 
 # Project Demo **
-- [ Click here to download and view the demo video](./demo.webm)
+- [Download the Demo Video](./demo.webm)
