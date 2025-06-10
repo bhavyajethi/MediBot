@@ -4,24 +4,23 @@ from langchain_core.prompts import PromptTemplate
 from langchain.chains import create_retrieval_chain
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.chains.combine_documents import create_stuff_documents_chain # NEW IMPORT
+from langchain.chains.combine_documents import create_stuff_documents_chain 
 # from dotenv import load_dotenv # NEW IMPORT
 
-# --- Configuration ---
-# Ensure your HuggingFace API token is set as an environment variable (e.g., HF_TOKEN)
+
 HF_TOKEN = os.environ.get("HF_TOKEN")
 HUGGINGFACE_REPO_ID = "mistralai/Mistral-7B-Instruct-v0.3"
 DB_FAISS_PATH = "vectorstore/db_faiss"
 
 # --- Utility Functions ---
-def load_llm(huggingface_repo_id, hf_token): # Added hf_token parameter
+def load_llm(huggingface_repo_id, hf_token): 
     """Loads the HuggingFace language model."""
     if not hf_token:
         raise ValueError("HuggingFace API token (HF_TOKEN) not found in environment variables.")
     llm = HuggingFaceEndpoint(
         repo_id=huggingface_repo_id,
         temperature=0.5,
-        huggingfacehub_api_token=hf_token, # Use the passed hf_token
+        huggingfacehub_api_token=hf_token, 
         max_new_tokens=512
     )
     return llm
@@ -42,7 +41,7 @@ def set_custom_prompt(custom_prompt_template):
     prompt = PromptTemplate(template=custom_prompt_template, input_variables=["context", "question"])
     return prompt
 
-# --- Main Script Execution ---
+
 if __name__ == "__main__":
     # Load LLM
     try:
@@ -50,9 +49,7 @@ if __name__ == "__main__":
     except ValueError as e:
         print(f"Error: {e}")
         print("Please set your HuggingFace API token as an environment variable (HF_TOKEN).")
-        exit() # Exit if token is not found
-
-    # Set custom prompt
+        exit() 
     prompt_instance = set_custom_prompt(CUSTOM_PROMPT_TEMPLATE)
 
     # Load Embedding Model and FAISS Database (CPU-only)
@@ -83,17 +80,16 @@ if __name__ == "__main__":
     try:
         response = qa_chain.invoke({'input': user_query})
 
-        # --- Accessing results (Updated for LangChain 0.2.x response keys) ---
+        
         print("\n--- RESULT ---")
-        print(response.get("answer", "No answer found.")) # LangChain 0.2.x uses "answer"
-
+        print(response.get("answer", "No answer found."))
         print("\n--- SOURCE DOCUMENTS ---")
-        source_documents = response.get("context", []) # LangChain 0.2.x uses "context"
+        source_documents = response.get("context", []) 
         if source_documents:
             for i, doc in enumerate(source_documents):
                 print(f"Document {i+1}:")
                 print(f"  Source: {doc.metadata.get('source', 'N/A')}")
-                print(f"  Page Content (Snippet): {doc.page_content[:200]}...") # Print a snippet
+                print(f"  Page Content (Snippet): {doc.page_content[:200]}...") 
                 print("-" * 20)
         else:
             print("No relevant source documents found.")

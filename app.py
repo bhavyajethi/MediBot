@@ -1,7 +1,5 @@
 import os
 import streamlit as st
-
-# Ensure these imports are from the correct new locations
 from langchain_huggingface import HuggingFaceEndpoint
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -10,7 +8,6 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 
 
-# --- Configuration and Utility Functions ---
 DB_FAISS_PATH = "vectorstore/db_faiss"
 
 @st.cache_resource
@@ -35,26 +32,25 @@ def load_llm(huggingface_repo_id, HF_TOKEN):
         repo_id=huggingface_repo_id,
         temperature=0.5,
         huggingfacehub_api_token=HF_TOKEN,
-        max_new_tokens=512 # Using max_new_tokens for generation length
+        max_new_tokens=512 
     )
     return llm
 
-# --- Main Streamlit Application ---
 def main():
     st.title("Ask Chatbot!")
 
-    # Initialize chat history in session state
+    
     if 'messages' not in st.session_state:
         st.session_state.messages = []
 
-    # Display past messages
+    
     for message in st.session_state.messages:
         st.chat_message(message['role']).markdown(message['content'])
 
-    # Load vector store once and cache it
+    
     vectorstore = get_vectorstore()
     if vectorstore is None:
-        st.stop() # Stop execution if vector store failed to load
+        st.stop() 
 
     # Define custom prompt template
     CUSTOM_PROMPT_TEMPLATE = """
@@ -103,10 +99,9 @@ def main():
             response = qa_chain.invoke({'input': prompt_input})
 
             # Extract result and source documents
-            result = response["answer"] # LangChain 0.2.x changed "result" to "answer"
-            source_documents = response["context"] # LangChain 0.2.x changed "source_documents" to "context"
+            result = response["answer"] 
+            source_documents = response["context"] 
 
-            # Format and display the assistant's response
             result_to_show = f"{result}\n\n**Source Documents:**\n"
             if source_documents:
                 for doc in source_documents:
