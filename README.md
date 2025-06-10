@@ -32,5 +32,5 @@ Provides a brief overview of the disease
 # ** Model Details **
 - Embeddings: sentence-transformers/all-MiniLM-L6-v2
 
-# ** Project Execution **
-- Run the project using streamlit run app.py
+# ** Project Demo **
+- [▶️ Watch Demo on Google Drive](https://drive.google.com/file/d/18I1j4Gn7oxEYju3VOeO8EA9Ljm8twlrQ/view?usp=sharing)
